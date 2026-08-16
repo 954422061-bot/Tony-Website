@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TONY — Personal Site</title>
+<style>
+  /* ========== RESET & BASE ========== */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #f5f5f0;
+    --fg: #111111;
+    --accent: #ff3b00;
+    --border: 3px solid var(--fg);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* ========== CUSTOM CURSOR ========== */
+  .cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--fg);
+    pointer-events: none;
+    z-index: 9998;
+    transition: width 0.2s, height 0.2s, border-color 0.2s;
+  }
+
+  .cursor-ring.hover {
+    width: 56px;
+    height: 56px;
+    border-color: var(--accent);
+  }
+
+  /* ========== NAV BAR ========== */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    background: var(--bg);
+    border-bottom: var(--border);
+  }
+
+  .logo {
+    font-weight: 900;
+    font-size: 1.4em;
+    letter-spacing: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 8px 18px;
+    text-decoration: none;
+    color: var(--fg);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    border: 2px solid transparent;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .nav-links a:hover {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+
+  .theme-toggle {
+    background: none;
+    border: var(--border);
+    padding: 6px 14px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: none;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .theme-toggle:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 40px;
+    border-bottom: var(--border);
+    position: relative;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    width: fit-content;
+    border: var(--border);
+    padding: 4px 12px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    animation: tagPulse 2s steps(2) infinite;
+  }
+
+  @keyframes tagPulse {
+    0%, 100% { background: var(--bg); color: var(--fg); }
+    50%      { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5em, 8vw, 6em);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 .accent {
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 1.1em;
+    max-width: 500px;
+    border-left: var(--border);
+    padding-left: 16px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    right: 40px;
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: bounceHard 1s steps(2) infinite;
+  }
+
+  @keyframes bounceHard {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+  }
+
+  /* ========== SECTION COMMON ========== */
+  section {
+    padding: 60px 40px;
+    border-bottom: var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .section-num {
+    font-size: 0.8em;
+    font-weight: 700;
+    border: var(--border);
+    padding: 2px 8px;
+  }
+
+  .section-title {
+    font-size: 2em;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+  }
+
+  /* ========== HOBBIES GRID ========== */
+  .hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    border: var(--border);
+  }
+
+  .hobby-card {
+    border: var(--border);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+    cursor: none;
+  }
+
+  .hobby-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--fg);
+    transition: left 0.3s;
+    z-index: 0;
+  }
+
+  .hobby-card:hover::before {
+    left: 0;
+  }
+
+  .hobby-card:hover {
+    color: var(--bg);
+  }
+
+  .hobby-card:hover .hobby-img {
+    filter: grayscale(0) contrast(1.1);
+    border-color: var(--bg);
+  }
+
+  .hobby-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hobby-label {
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    opacity: 0.6;
+  }
+
+  .hobby-name {
+    font-size: 1.5em;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .hobby-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border: var(--border);
+    filter: grayscale(1);
+    transition: filter 1s, border-color 1s;
+    display: block;
+  }
+
+  /* ========== CANADA GOALS — ACCORDION ========== */
+  .goals-list {
+    border: var(--border);
+  }
+
+  .goal-item {
+    border-bottom: var(--border);
+  }
+
+  .goal-item:last-child {
+    border-bottom: none;
+  }
+
+  .goal-trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 1.2em;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: left;
+    cursor: none;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .goal-trigger:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .goal-trigger .plus {
+    font-size: 1.5em;
+    font-weight: 900;
+    transition: transform 0.2s;
+  }
+
+  .goal-item.open .goal-trigger .plus {
+    transform: rotate(45deg);
+  }
+
+  .goal-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .goal-item.open .goal-content {
+    max-height: 500px;
+  }
+
+  .goal-inner {
+    padding: 0 24px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .goal-inner img {
+    width: 240px;
+    height: 160px;
+    object-fit: cover;
+    border: var(--border);
+    filter: grayscale(1);
+    transition: filter 0.3s;
+  }
+
+  .goal-inner:hover img {
+    filter: grayscale(0);
+  }
+
+  .goal-inner p {
+    flex: 1;
+    min-width: 200px;
+    font-size: 0.95em;
+  }
+
+  /* ========== DIARY TIMELINE ========== */
+  .diary-entry {
+    border: var(--border);
+    padding: 24px;
+    position: relative;
+  }
+
+  .diary-date {
+    display: inline-block;
+    background: var(--fg);
+    color: var(--bg);
+    padding: 4px 12px;
+    font-weight: 700;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .diary-entry h3 {
+    font-size: 1.6em;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .diary-gallery {
+    display: flex;
+    gap: 0;
+    margin-top: 16px;
+    border: var(--border);
+  }
+
+  .diary-gallery img {
+    flex: 1;
+    min-width: 0;
+    height: 200px;
+    object-fit: cover;
+    border-right: var(--border);
+    filter: grayscale(1);
+    transition: filter 0.3s, flex 0.3s;
+    cursor: none;
+  }
+
+  .diary-gallery img:last-child {
+    border-right: none;
+  }
+
+  .diary-gallery img:hover {
+    filter: grayscale(0);
+    flex: 2;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ========== DARK MODE ========== */
+  body.dark {
+    --bg: #111111;
+    --fg: #f5f5f0;
+  }
+
+  body.dark .hero-tag {
+    animation: tagPulseDark 2s steps(2) infinite;
+  }
+
+  @keyframes tagPulseDark {
+    0%, 100% { background: var(--bg); color: var(--fg); }
+    50%      { background: var(--accent); color: var(--fg); border-color: var(--accent); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 640px) {
+    nav { flex-wrap: wrap; gap: 10px; }
+    .nav-links { order: 3; width: 100%; }
+    .hero { padding: 40px 20px; }
+    section { padding: 40px 20px; }
+    .diary-gallery { flex-direction: column; }
+    .diary-gallery img { border-right: none; border-bottom: var(--border); }
+    .diary-gallery img:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">TONY.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#hobbies">Hobbies</a></li>
+    <li><a href="#goals">Goals</a></li>
+    <li><a href="#diary">Diary</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle">DARK</button>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="about">
+  <span class="hero-tag">// Personal Site v1.0</span>
+  <h1>Hi, I'm <span class="accent">Tony</span></h1>
+  <p class="hero-sub">16-year-old student from China. Currently exploring Canada — its culture, food, and everything in between.</p>
+  <span class="scroll-hint">SCROLL ↓</span>
+</header>
+
+<!-- HOBBIES -->
+<section id="hobbies">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Hobbies</h2>
+  </div>
+  <div class="hobbies-grid">
+    <div class="hobby-card">
+      <div class="hobby-label">// Hobby 01</div>
+      <div class="hobby-name">Basketball</div>
+      <img class="hobby-img" src="https://www.bing.com/th/id/OIP.hkx7z4yeoHvLqjh2zxIzMgHaQD?w=193&h=346&c=8&rs=1&qlt=90&o=6&dpr=1.5&pid=ImgAns&rm=2" alt="Basketball">
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-label">// Hobby 02</div>
+      <div class="hobby-name">Video Games</div>
+      <img class="hobby-img" src="https://tse1.mm.bing.net/th/id/OIP.oXcAXdhEz6G5za4gqDmUkAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Video Games">
+    </div>
+  </div>
+</section>
+
+<!-- CANADA GOALS -->
+<section id="goals">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Canada Goals</h2>
+  </div>
+  <div class="goals-list">
+    <div class="goal-item">
+      <button class="goal-trigger">
+        <span>Exploring Different Culture</span>
+        <span class="plus">+</span>
+      </button>
+      <div class="goal-content">
+        <div class="goal-inner">
+          <img src="https://preview.qiantucdn.com/58pic/us/Uf/8q/SC/md8vyri4ph1g5usqnxt3lwj29acfboe6_PIC2018.png!qt_h320_webp" alt="Culture">
+          <p>Experiencing multiculturalism firsthand — meeting people from diverse backgrounds, learning new traditions, and understanding what makes Canadian culture unique.</p>
+        </div>
+      </div>
+    </div>
+    <div class="goal-item">
+      <button class="goal-trigger">
+        <span>Eating Special Food</span>
+        <span class="plus">+</span>
+      </button>
+      <div class="goal-content">
+        <div class="goal-inner">
+          <img src="https://tse4.mm.bing.net/th/id/OIP.x1R_3xGD3WCo-B8bc8yCLQHaEJ?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Food">
+          <p>Trying poutine, maple syrup treats, fresh seafood, and all the local specialties across different cities. Food is the fastest way to understand a place.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIARY -->
+<section id="diary">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Diary</h2>
+  </div>
+  <div class="diary-entry">
+    <span class="diary-date">Aug 13, 2026</span>
+    <h3>Casa Loma</h3>
+    <p>Today we went to Casa Loma — a historic castle in the middle of Toronto. Explored the towers, gardens, and secret passages. Definitely worth the trip.</p>
+    <div class="diary-gallery">
+      <img src="images/1.JPG" alt="Casa Loma 1">
+      <img src="images/2.JPG" alt="Casa Loma 2">
+      <img src="images/3.JPG" alt="Casa Loma 3">
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 TONY.</span>
+  <span>Built with HTML + CSS + JS</span>
+</footer>
+
+<script>
+  // ===== Custom Cursor =====
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.left = mouseX - 4 + 'px';
+    dot.style.top = mouseY - 4 + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    ring.style.left = ringX - 18 + 'px';
+    ring.style.top = ringY - 18 + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hover effect on interactive elements
+  document.querySelectorAll('a, button, .hobby-card, .diary-gallery img').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+
+  // ===== Accordion (Canada Goals) =====
+  document.querySelectorAll('.goal-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.parentElement;
+      const wasOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.goal-item').forEach(i => i.classList.remove('open'));
+      // Toggle current
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // ===== Dark Mode Toggle =====
+  const toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    toggle.textContent = document.body.classList.contains('dark') ? 'LIGHT' : 'DARK';
+  });
+
+  // ===== Reveal on scroll =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section, .hero').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.5s, transform 0.5s';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>

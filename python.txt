@@ -1,0 +1,24 @@
+print("My first Python Program") 
+
+print("-------------------------") 
+
+print("What Your Name") 
+
+name=input()
+
+print("Hellow "+name+"!") 
+
+print("How old are you?")
+
+age=int(input())
+
+print("You are "+str(age)+" years old!")
+
+print("Did you eat breakfast?")
+
+answer = input()
+
+if(answer == "Yes"):
+    print("Good job!")
+else:
+    print("You must be hungry")

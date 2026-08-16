@@ -1,0 +1,117 @@
+score = 0
+
+print("Question 1:\n")
+
+print("What is the capital of China")
+
+answer = input()
+
+if(answer =="Beijing"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was Beijing")
+ 
+print("Question 2:\n")
+
+print("What the famous NBA players in Canada？")
+
+answer = input()
+
+if(answer =="SGA"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was SGA")
+
+print("Question 3:\n")
+
+print("What is the most popular food in Canada?")
+
+answer = input()
+
+if(answer =="Poutin"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was Poutin")
+
+print("Question 4:\n")
+
+print("What is the capital of Canada?")
+
+answer = input()
+
+if(answer =="Ottawa"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was Ottawa")
+
+print("Question 5:\n")
+
+print("Is this quiz creator good-looking?")
+
+answer = input()
+
+if(answer =="Yes"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was Yes")
+
+print("Question 6:\n")
+
+print("What is the quiz creator favourite FPS game?")
+
+answer = input()
+
+if(answer =="CS"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was CS")
+
+print("Question 7:\n")
+
+print("Which the city does the Niagara Falls locate/")
+
+answer = input()
+
+if(answer =="Toronto"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was Toronto")
+
+print("Question 8:\n")
+
+print("Which team in Canada in NBA?")
+
+answer = input()
+
+if(answer =="Toronto Raptors"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was Toronto Raptors")
+
+print("Question 9:\n")
+
+print("What is the highest building in Canada?")
+
+answer = input()
+
+if(answer =="CN Tower"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was CN Tower")
+
+print("Question 10:\n")
+
+print("What is Canada's national treasure?")
+
+answer = input()
+
+if(answer =="North American Beaver"):
+    score = score + 1
+else:
+    print("Sorry The correct answer was North American ")
+
+answer = input()
+if(score>=5):
+    print("Awsome")
+else:
+    print("Dont't be worried Try again!")
